@@ -1,0 +1,79 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.venv/
+chroma_db/
+__pycache__/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# logs
+/logs
+
+# Sentry Config File
+.env.sentry-build-plugin
+.env*.local
+
+#CLAUDE.md
+# AGENTS.md
+
+.omc/
+.omx/
+.omo/
+.claude/sessions/
+
+
+
+
+# Ignore Smart Environment folder
+.smart-env
+
+# Obsidian - UI 상태 파일 (기기별로 다르므로 충돌 원인)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/workspace
+
+# Obsidian-git 플러그인 충돌 보고 파일
+conflict-files-obsidian-git.md
+
+# Obsidian 휴지통
+.trash/
+
+# Node compile cache
+node-compile-cache/
