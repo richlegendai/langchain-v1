@@ -228,16 +228,6 @@ content-rag-tauri-app/
 └── README.md
 ```
 
-## 이력서 삽입용 요약 문구
-
-**Tauri 기반 콘텐츠 기획·수정·발행 RAG 데스크톱 앱**
-
-- Tauri와 React 기반 데스크톱 UI에서 주제 입력, 후보 비교, 말투 선택, 수정 요청, 검수 결과, 발행 상태 관리 화면 구성
-- 프로젝트 내부 콘텐츠와 CTA 기준, 톤앤매너 예시, 발행 체크리스트를 Chunking과 Embedding 처리 후 Chroma 기반 Vector DB에 저장
-- FastAPI 기반 로컬 Agent Server에서 LangChain으로 문서 검색과 LLM 호출 체인을 구성하고, LangGraph로 주제 분석, 자료 검색, 후보 생성, 사용자 선택, 수정 요청 반영, 검수, 발행 준비 단계를 Node로 분리
-- Rust Command와 Python subprocess를 통해 Claude Code CLI, Codex CLI 등 로컬 CLI 기반 LLM 도구를 콘텐츠 생성·수정 단계에 연결
-- 최종 콘텐츠, 선택 이력, 수정 요청, 발행 채널, 발행 상태를 SQLite에 저장하여 반복 가능한 콘텐츠 운영 이력으로 관리
-
 ## 표현 수위 가이드
 
 ### 실험 후 안전한 표현
