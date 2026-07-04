@@ -15,20 +15,32 @@ Claude Code 같은 로컬 CLI 기반 LLM 도구를 API가 아니라 사용자 Ma
 - Python FastAPI: 로컬 Agent Server
 - LangGraph: 콘텐츠 생성 워크플로우의 상태, 노드, 전환 관리
 - LangChain: RAG 검색과 LLM 호출 체인 구성
-- Chroma: 기존 콘텐츠와 기준 문서의 벡터 검색
+- Chroma: 프로젝트 내부 콘텐츠 자료와 기준 문서의 벡터 검색
 - SQLite: 초안, 수정 이력, 발행 상태, CLI 실행 로그 저장
 
 ## 프로젝트 한 줄 정의
 
-로컬 콘텐츠 자료와 발행 기준을 Vector DB에 저장하고, Claude Code CLI 같은 로컬 LLM 도구를 호출하여 콘텐츠 후보 생성, 사용자 선택, 수정, 검수, 발행 준비까지 처리하는 Tauri 기반 콘텐츠 운영 데스크톱 앱입니다.
+프로젝트 내부에 저장한 로컬 콘텐츠 자료와 발행 기준을 Vector DB에 저장하고, Claude Code CLI 같은 로컬 LLM 도구를 호출하여 콘텐츠 후보 생성, 사용자 선택, 수정, 검수, 발행 준비까지 처리하는 Tauri 기반 콘텐츠 운영 데스크톱 앱입니다.
+
+## 로컬 콘텐츠 자료 범위
+
+RAG 검색과 콘텐츠 생성에 사용하는 원천 자료는 사용자 MacBook 전체가 아니라 이 프로젝트 폴더 안의 자료를 대상으로 합니다.
+
+기본 위치는 다음과 같이 둡니다.
+
+- `data/sources/content/`: 기존 콘텐츠, 블로그 초안, SNS 초안, 뉴스레터 초안
+- `data/sources/guidelines/`: CTA 기준, 톤앤매너 예시, 발행 기준, 금지 표현, 검수 체크리스트
+- `data/sources/references/`: 참고 자료, 제품 설명, 고객 사례, 조사 메모
+
+앱은 위 폴더에 들어 있는 Markdown, HTML, TXT, CSV 같은 로컬 파일을 읽어 Chunking과 Embedding을 수행하고, Chroma Vector DB에 저장합니다. 프로젝트 밖의 Obsidian vault, 다운로드 폴더, 개인 문서 폴더는 사용자가 별도로 가져오거나 복사하지 않는 한 자동 수집 대상에 포함하지 않습니다.
 
 ## 로컬 데스크톱 앱이 맞는 이유
 
 | 이유 | 설명 |
 | --- | --- |
 | CLI LLM 호출 | Claude Code CLI, Codex CLI, Gemini CLI처럼 로컬 인증 세션을 쓰는 도구를 직접 실행할 수 있습니다. |
-| 로컬 파일 접근 | Obsidian, Markdown, 기존 블로그 초안, CTA 기준, 발행 체크리스트를 MacBook 파일 시스템에서 직접 읽을 수 있습니다. |
-| 로컬 Vector DB | Chroma 같은 Vector DB를 앱 데이터 폴더나 프로젝트 폴더에서 관리할 수 있습니다. |
+| 로컬 파일 접근 | 프로젝트 내부 `data/sources/`에 저장한 Markdown, HTML, 기존 초안, CTA 기준, 발행 체크리스트를 직접 읽을 수 있습니다. |
+| 로컬 Vector DB | Chroma 같은 Vector DB를 이 프로젝트의 `data/chroma_db/` 또는 앱 데이터 폴더에서 관리할 수 있습니다. |
 | 데스크톱 UI | 후보 비교, 말투 선택, 수정 요청, 검수 결과, 발행 준비 상태를 로컬 앱 화면에서 안정적으로 관리할 수 있습니다. |
 
 ## 권장 아키텍처
@@ -54,7 +66,7 @@ FastAPI Agent Server 호출
 ↓
 LangGraph workflow 시작
 ↓
-LangChain이 Chroma에서 기존 콘텐츠, CTA, 톤앤매너, 발행 기준 검색
+LangChain이 Chroma에서 프로젝트 내부 콘텐츠, CTA, 톤앤매너, 발행 기준 검색
 ↓
 CLI LLM Adapter가 Claude Code CLI 또는 Codex CLI 호출
 ↓
@@ -79,7 +91,7 @@ SQLite에 초안, 수정 이력, 발행 상태 저장
 
 | 용어 | 설명 |
 | --- | --- |
-| RAG = Retrieval-Augmented Generation | 검색 증강 생성입니다. AI가 기존 콘텐츠와 기준 문서를 먼저 검색한 뒤 그 내용을 참고하여 결과를 생성하는 방식입니다. |
+| RAG = Retrieval-Augmented Generation | 검색 증강 생성입니다. AI가 프로젝트 내부 콘텐츠와 기준 문서를 먼저 검색한 뒤 그 내용을 참고하여 결과를 생성하는 방식입니다. |
 | Vector DB = Vector Database | 문서를 숫자 벡터로 저장하여 의미가 비슷한 자료를 찾는 데이터베이스입니다. |
 | Embedding | 문서나 문장을 의미 검색이 가능한 숫자 벡터로 바꾸는 과정입니다. |
 | CLI LLM Adapter | Claude Code CLI, Codex CLI 같은 로컬 명령어 기반 LLM 도구를 같은 방식으로 호출하기 위한 어댑터입니다. |
@@ -123,7 +135,7 @@ analyze_topic
   - 주제, 키워드, 타깃 독자, 발행 채널 분석
 ↓
 retrieve_context
-  - 기존 콘텐츠, CTA 기준, 톤앤매너 예시, 발행 체크리스트 검색
+  - 프로젝트 내부 콘텐츠, CTA 기준, 톤앤매너 예시, 발행 체크리스트 검색
 ↓
 generate_candidates_with_cli
   - Claude Code CLI 또는 Codex CLI로 콘텐츠 후보 3개 생성
@@ -153,7 +165,7 @@ END 또는 apply_revision으로 반복
 
 | 저장소 | 역할 |
 | --- | --- |
-| Chroma | 기존 콘텐츠, CTA 기준, 톤앤매너 예시, 발행 체크리스트의 벡터 검색 저장소 |
+| Chroma | 프로젝트 내부 콘텐츠, CTA 기준, 톤앤매너 예시, 발행 체크리스트의 벡터 검색 저장소 |
 | SQLite | 초안 후보, 선택 이력, 수정 요청, 발행 상태, CLI 실행 로그 저장 |
 | Local Files | 발행용 Markdown, HTML, 최종 콘텐츠 파일 저장 |
 | App Config | Claude Code CLI 경로, Codex CLI 경로, 데이터 폴더, 기본 모델 옵션 저장 |
@@ -178,7 +190,7 @@ END 또는 apply_revision으로 반복
 ## 최소 기능 목록
 
 - 주제/키워드 입력
-- 기존 콘텐츠와 CTA 기준 검색
+- 프로젝트 내부 콘텐츠와 CTA 기준 검색
 - 콘텐츠 후보 3개 생성
 - 후보 선택과 말투 선택
 - 수정 요청 입력 후 재생성
@@ -208,6 +220,9 @@ content-rag-tauri-app/
 │   └── app/schemas.py
 ├── data/
 │   ├── sources/
+│   │   ├── content/
+│   │   ├── guidelines/
+│   │   └── references/
 │   ├── chroma_db/
 │   └── app.sqlite
 └── README.md
@@ -218,7 +233,7 @@ content-rag-tauri-app/
 **Tauri 기반 콘텐츠 기획·수정·발행 RAG 데스크톱 앱**
 
 - Tauri와 React 기반 데스크톱 UI에서 주제 입력, 후보 비교, 말투 선택, 수정 요청, 검수 결과, 발행 상태 관리 화면 구성
-- 기존 콘텐츠와 CTA 기준, 톤앤매너 예시, 발행 체크리스트를 Chunking과 Embedding 처리 후 Chroma 기반 Vector DB에 저장
+- 프로젝트 내부 콘텐츠와 CTA 기준, 톤앤매너 예시, 발행 체크리스트를 Chunking과 Embedding 처리 후 Chroma 기반 Vector DB에 저장
 - FastAPI 기반 로컬 Agent Server에서 LangChain으로 문서 검색과 LLM 호출 체인을 구성하고, LangGraph로 주제 분석, 자료 검색, 후보 생성, 사용자 선택, 수정 요청 반영, 검수, 발행 준비 단계를 Node로 분리
 - Rust Command와 Python subprocess를 통해 Claude Code CLI, Codex CLI 등 로컬 CLI 기반 LLM 도구를 콘텐츠 생성·수정 단계에 연결
 - 최종 콘텐츠, 선택 이력, 수정 요청, 발행 채널, 발행 상태를 SQLite에 저장하여 반복 가능한 콘텐츠 운영 이력으로 관리
