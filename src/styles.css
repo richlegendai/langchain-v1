@@ -1,0 +1,297 @@
+:root {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+  color: #f8fafc;
+  background: #020617;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #020617;
+}
+
+button,
+select,
+input,
+textarea {
+  font: inherit;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.64;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.workspace {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #22c55e;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  word-break: keep-all;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #cbd5e1;
+  background: #0f172a;
+}
+
+.status-pill.ready {
+  color: #bbf7d0;
+  border-color: #166534;
+}
+
+.status-pill.error {
+  color: #fecaca;
+  border-color: #991b1b;
+}
+
+.status-pill.loading {
+  cursor: wait;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(320px, 1fr) minmax(360px, 1.2fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  background: #0f172a;
+}
+
+.input-panel,
+.preview-panel {
+  grid-row: span 2;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #f8fafc;
+  background: #020617;
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  color: #020617;
+  font-weight: 800;
+  background: #22c55e;
+}
+
+.secondary-button {
+  color: #e2e8f0;
+  background: #1e293b;
+}
+
+.error-text {
+  margin: 12px 0 0;
+  color: #fca5a5;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.candidate-list,
+.check-list {
+  display: grid;
+  gap: 10px;
+}
+
+.candidate {
+  width: 100%;
+  min-height: 92px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: left;
+  color: #e2e8f0;
+  background: #020617;
+}
+
+.candidate strong,
+.candidate span {
+  display: block;
+}
+
+.candidate span {
+  margin-top: 8px;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.candidate.selected {
+  border-color: #22c55e;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+pre {
+  min-height: 360px;
+  max-height: 520px;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: #dbeafe;
+}
+
+.check-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  padding: 12px;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  background: #020617;
+}
+
+.check-item p {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+  color: #94a3b8;
+}
+
+.check-item.pass span {
+  color: #86efac;
+}
+
+.check-item.warning span {
+  color: #fde68a;
+}
+
+.check-item.fail span {
+  color: #fca5a5;
+}
+
+.saved-path,
+.search-summary p {
+  color: #94a3b8;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+@media (max-width: 1100px) {
+  .layout-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .topbar,
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 24px;
+    line-height: 1.32;
+  }
+}

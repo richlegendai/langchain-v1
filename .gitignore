@@ -22,6 +22,11 @@ __pycache__/
 
 # production
 /build
+/dist/
+src-tauri/target/
+data/chroma_db/
+data/app.sqlite
+data/outputs/
 
 # misc
 .DS_Store
